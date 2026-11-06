@@ -1,910 +1,623 @@
-```html
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="dark">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة متابعة المذاكرة الذكية | Study Dashboard</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            900: '#0c4a6e',
-                        },
-                        accent: {
-                            purple: '#a855f7',
-                            emerald: '#10b981',
-                            amber: '#f59e0b',
-                            rose: '#f43f5e'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Cairo', 'Segoe UI', 'Tahoma', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome Icons -->
+    <title>منصة متابعة المذاكرة الشاملة | Study Mastery Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Font Cairo -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: rgba(22, 30, 49, 0.75);
+            --bg-card: rgba(30, 41, 67, 0.5);
+            --bg-glass: rgba(255, 255, 255, 0.03);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+            padding-bottom: 60px;
         }
-        body.light {
-            background-color: #f1f5f9;
-            color: #0f172a;
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 25px 20px;
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+
+        /* Top Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
-        ::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.6);
+
+        .brand h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a5b4fc, #6366f1, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
+
+        .btn {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            color: var(--text-main);
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
         }
-        .completed-text {
+
+        .btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Widgets Section (Progress & Pomodoro) */
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 900px) {
+            .widgets-grid { grid-template-columns: 1fr; }
+        }
+
+        .widget-card {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-bg {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50px;
+            height: 18px;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid var(--border-glass);
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #10b981);
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50px;
+        }
+
+        .stats-summary {
+            display: flex;
+            gap: 25px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .stats-summary span b {
+            color: var(--text-main);
+        }
+
+        /* Pomodoro Timer */
+        .pomodoro-display {
+            text-align: center;
+        }
+
+        .timer-time {
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            font-family: monospace;
+            color: #a5b4fc;
+            margin: 10px 0;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Filter Controls */
+        .controls-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-glass);
+            padding: 12px 45px 12px 20px;
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filter-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-glass);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Subjects Grid */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 25px;
+        }
+
+        @media (max-width: 480px) {
+            .subjects-grid { grid-template-columns: 1fr; }
+        }
+
+        .subject-card {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .subject-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .subject-header {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .subject-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .unit-section {
+            padding: 15px 20px 5px;
+        }
+
+        .unit-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #a5b4fc;
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px stroke rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Lessons List */
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+            transition: all 0.25s ease;
+        }
+
+        .lesson-item:hover {
+            background: rgba(40, 53, 83, 0.7);
+        }
+
+        .lesson-item.completed {
+            background: rgba(16, 185, 129, 0.06);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .lesson-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .custom-checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--text-muted);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .lesson-item.completed .custom-checkbox {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .custom-checkbox i {
+            color: white;
+            font-size: 12px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s ease;
+        }
+
+        .lesson-item.completed .custom-checkbox i {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .lesson-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .lesson-item.completed .lesson-name {
             text-decoration: line-through;
-            opacity: 0.6;
+            color: var(--text-muted);
         }
-        /* Card glow effect */
-        .glow-card {
-            box-shadow: 0 0 15px -3px rgba(14, 165, 233, 0.15);
+
+        .lesson-actions {
+            display: flex;
+            gap: 8px;
         }
-        .glow-card:hover {
-            box-shadow: 0 0 20px -1px rgba(14, 165, 233, 0.3);
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: var(--radius-sm);
+            transition: color 0.2s ease;
         }
-        .checkbox-bounce {
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        .icon-btn:hover {
+            color: var(--primary);
         }
-        .checkbox-bounce:active {
-            transform: scale(0.85);
+
+        /* Rules & Vault Drawer */
+        .vault-section {
+            margin-top: 35px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+        }
+
+        .vault-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .vault-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr auto;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .vault-inputs { grid-template-columns: 1fr; }
+        }
+
+        .vault-inputs input, .vault-inputs select, .vault-inputs textarea {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            padding: 10px 15px;
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .rule-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            padding: 15px;
+            position: relative;
+        }
+
+        .rule-tag {
+            font-size: 0.75rem;
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .rule-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .rule-content {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            white-space: pre-wrap;
+        }
+
+        .delete-rule {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: var(--danger);
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .delete-rule:hover { opacity: 1; }
+
+        /* Modal for Lesson Notes */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-box {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-glass);
+            width: 90%;
+            max-width: 550px;
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .modal-box textarea {
+            width: 100%;
+            height: 150px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            padding: 12px;
+            outline: none;
+            resize: none;
+            margin-bottom: 15px;
         }
     </style>
 </head>
-<body class="min-h-screen pb-12 antialiased selection:bg-brand-500 selection:text-white">
+<body>
 
-    <!-- Header Navigation Bar -->
-    <header class="sticky top-0 z-40 backdrop-blur-md bg-slate-900/80 border-b border-slate-800 dark:bg-slate-900/80 dark:border-slate-800 light:bg-white/80 light:border-slate-200 transition-colors">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-gradient-to-tr from-brand-600 to-accent-purple p-2.5 rounded-xl text-white shadow-lg shadow-brand-500/20">
-                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <h1><i class="fa-solid fa-graduation-cap"></i> منصة متابعة الإنجاز الدراسي</h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn" onclick="exportData()"><i class="fa-solid fa-download"></i> تصدير البيانات</button>
+                <button class="btn" onclick="document.getElementById('importFile').click()"><i class="fa-solid fa-upload"></i> استيراد</button>
+                <input type="file" id="importFile" style="display:none" onchange="importData(event)">
+            </div>
+        </header>
+
+        <!-- Widgets Dashboard -->
+        <div class="widgets-grid">
+            <!-- Overall Progress Widget -->
+            <div class="widget-card">
+                <div class="progress-header">
+                    <h3><i class="fa-solid fa-chart-line" style="color: #6366f1;"></i> نسبة الإنجاز العام</h3>
+                    <h2 id="progressPercent" style="color: #10b981;">0%</h2>
                 </div>
-                <div>
-                    <h1 class="font-bold text-lg leading-tight">مُتابِع المذاكرة الذكي</h1>
-                    <p class="text-xs text-slate-400 light:text-slate-500">منظومة إنجاز الدروس والملاحظات</p>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+                <div class="stats-summary">
+                    <span>الدروس المكتملة: <b id="completedCount">0</b></span>
+                    <span>المتبقية: <b id="remainingCount">0</b></span>
+                    <span>إجمالي الدروس: <b id="totalCount">0</b></span>
                 </div>
             </div>
 
-            <!-- Actions & Theme Toggle -->
-            <div class="flex items-center gap-3">
-                <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 light:bg-slate-200 light:hover:bg-slate-300 text-slate-300 light:text-slate-700 transition">
-                    <i class="fa-solid fa-moon text-lg" id="themeIcon"></i>
-                </button>
-                <button onclick="resetAllProgress()" class="px-3 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs font-semibold flex items-center gap-1.5 border border-rose-500/20 transition">
-                    <i class="fa-solid fa-rotate-right"></i>
-                    <span class="hidden sm:inline">إعادة ضبط</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
-
-        <!-- Top Progress Summary Banner -->
-        <div class="bg-slate-800/80 light:bg-white border border-slate-700/60 light:border-slate-200 rounded-2xl p-5 sm:p-6 shadow-xl backdrop-blur relative overflow-hidden">
-            <div class="absolute -left-10 -top-10 w-40 h-40 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center relative z-10">
-                <!-- Percentage Circle/Bar -->
-                <div class="md:col-span-2 space-y-3">
-                    <div class="flex justify-between items-end">
-                        <div>
-                            <span class="text-xs font-bold tracking-wider text-brand-500 uppercase">مستوى التقدم الإجمالي</span>
-                            <h2 class="text-2xl sm:text-3xl font-extrabold mt-0.5" id="overallPercentageText">0% مُكتمل</h2>
-                        </div>
-                        <span class="text-sm text-slate-400 light:text-slate-600 font-medium" id="overallCountText">0 من 0 درس</span>
-                    </div>
-                    <!-- Main Progress Bar -->
-                    <div class="w-full h-4 bg-slate-700/60 light:bg-slate-200 rounded-full overflow-hidden p-0.5 border border-slate-600/30">
-                        <div id="overallProgressBar" class="h-full bg-gradient-to-r from-brand-500 via-accent-purple to-accent-emerald rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
-                    </div>
-                </div>
-
-                <!-- Stats Badges -->
-                <div class="flex items-center justify-around bg-slate-900/50 light:bg-slate-100 p-4 rounded-xl border border-slate-700/40 light:border-slate-200">
-                    <div class="text-center">
-                        <div class="text-xl font-bold text-emerald-400" id="completedCount">0</div>
-                        <div class="text-xs text-slate-400 light:text-slate-600">منتهي</div>
-                    </div>
-                    <div class="w-px h-8 bg-slate-700 light:bg-slate-300"></div>
-                    <div class="text-center">
-                        <div class="text-xl font-bold text-amber-400" id="remainingCount">0</div>
-                        <div class="text-xs text-slate-400 light:text-slate-600">متبقي</div>
-                    </div>
-                    <div class="w-px h-8 bg-slate-700 light:bg-slate-300"></div>
-                    <div class="text-center">
-                        <div class="text-xl font-bold text-brand-500" id="totalCount">0</div>
-                        <div class="text-xs text-slate-400 light:text-slate-600">إجمالي الدروس</div>
-                    </div>
+            <!-- Focus Pomodoro Widget -->
+            <div class="widget-card pomodoro-display">
+                <h3><i class="fa-solid fa-clock" style="color: #f59e0b;"></i> مؤقت التركيز (Pomodoro)</h3>
+                <div class="timer-time" id="timerDisplay">25:00</div>
+                <div class="timer-controls">
+                    <button class="btn" id="startTimerBtn" onclick="toggleTimer()"><i class="fa-solid fa-play"></i> بدء</button>
+                    <button class="btn" onclick="resetTimer()"><i class="fa-solid fa-rotate-right"></i> إعادة</button>
                 </div>
             </div>
         </div>
 
-        <!-- Controls Bar: Subject Tabs & Search -->
-        <div class="space-y-4">
-            <!-- Search & Filter Input -->
-            <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
-                <!-- Subject Pills Navigation -->
-                <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0 scrollbar-none" id="subjectFilterContainer">
-                    <!-- Dynamic Filters populated by JS -->
-                </div>
-
-                <!-- Search Input Box -->
-                <div class="relative w-full sm:w-72">
-                    <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="بحث في الدروس أو المواد..." class="w-full pr-10 pl-4 py-2 bg-slate-800/90 light:bg-white border border-slate-700 light:border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition">
-                </div>
+        <!-- Filters & Search Bar -->
+        <div class="controls-bar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="ابحث عن درس أو وحدة معين..." oninput="renderDashboard()">
             </div>
+            <button class="filter-btn active" onclick="setFilter('all', this)">الكل</button>
+            <button class="filter-btn" onclick="setFilter('completed', this)">المكتملة</button>
+            <button class="filter-btn" onclick="setFilter('pending', this)">المتبقية</button>
         </div>
 
-        <!-- Main Dashboard Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- Lessons List Column (Takes 2 Columns on Large Screens) -->
-            <div class="lg:col-span-2 space-y-6" id="subjectsContainer">
-                <!-- Subject Cards populated by JS -->
-            </div>
+        <!-- Main Content: Subjects Grid -->
+        <div class="subjects-grid" id="subjectsGrid"></div>
 
-            <!-- Global Notes & Formulas Hub Column (Takes 1 Column) -->
-            <div class="space-y-6">
-                <!-- Quick Notes / Math Formulas Card -->
-                <div class="bg-slate-800/80 light:bg-white border border-slate-700/60 light:border-slate-200 rounded-2xl p-5 shadow-lg backdrop-blur sticky top-20">
-                    <div class="flex items-center justify-between mb-4 border-b border-slate-700/60 light:border-slate-200 pb-3">
-                        <div class="flex items-center gap-2.5">
-                            <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
-                                <i class="fa-solid fa-lightbulb text-lg"></i>
-                            </div>
-                            <h3 class="font-bold text-base">القوانين والملاحظات المهمة</h3>
-                        </div>
-                        <button onclick="openFormulaModal()" class="px-2.5 py-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1 transition">
-                            <i class="fa-solid fa-plus"></i> إضافة قانون
-                        </button>
-                    </div>
-
-                    <!-- Formula List -->
-                    <div id="formulasList" class="space-y-3 max-h-[calc(100vh-240px)] overflow-y-auto pr-1">
-                        <!-- Populated by JS -->
-                    </div>
-                </div>
+        <!-- Formula & Important Rules Vault -->
+        <div class="vault-section">
+            <div class="vault-header">
+                <h3><i class="fa-solid fa-book-bookmark" style="color: #a5b4fc;"></i> بنك القوانين والقواعد والملاحظات الهامة</h3>
             </div>
-
-        </div>
-    </main>
-
-    <!-- Modal for Lesson Note Edit -->
-    <div id="noteModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 light:bg-white border border-slate-700 light:border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden transform transition-all">
-            <div class="p-5 border-b border-slate-800 light:border-slate-200 flex justify-between items-center bg-slate-800/40 light:bg-slate-50">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-pen-to-square text-brand-500"></i>
-                    <h3 class="font-bold text-base" id="modalLessonTitle">إضافة ملاحظة للدرس</h3>
-                </div>
-                <button onclick="closeNoteModal()" class="text-slate-400 hover:text-white light:hover:text-slate-800 transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
+            <div class="vault-inputs">
+                <select id="ruleSubject">
+                    <option value="الرياضيات">الرياضيات</option>
+                    <option value="العلوم">العلوم</option>
+                    <option value="اللغة العربية">اللغة العربية</option>
+                    <option value="الكمبيوتر">الكمبيوتر</option>
+                    <option value="عام">عام / ملاحظة</option>
+                </select>
+                <input type="text" id="ruleTitle" placeholder="عنوان القانون / القاعدة">
+                <textarea id="ruleContent" placeholder="اكتب النص أو القانون هنا..." rows="1"></textarea>
+                <button class="btn" onclick="addRule()"><i class="fa-solid fa-plus"></i> إضافة</button>
             </div>
-            <div class="p-5 space-y-4">
-                <p class="text-xs text-slate-400 light:text-slate-600">اكتب ملخصك، القواعد الهامة، أو الملاحظات الخاصة بهذا الدرس لتستذكرها لاحقاً بسهولة.</p>
-                <textarea id="modalNoteInput" rows="5" placeholder="اكتب ملاحظاتك هنا..." class="w-full p-3 bg-slate-800 light:bg-slate-100 border border-slate-700 light:border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-200 light:text-slate-800"></textarea>
-            </div>
-            <div class="p-4 border-t border-slate-800 light:border-slate-200 bg-slate-800/20 light:bg-slate-50 flex justify-end gap-2">
-                <button onclick="closeNoteModal()" class="px-4 py-2 rounded-xl bg-slate-800 light:bg-slate-200 hover:bg-slate-700 light:hover:bg-slate-300 text-sm font-semibold transition">إلغاء</button>
-                <button onclick="saveLessonNote()" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition shadow-md shadow-brand-500/20">حفظ الملاحظة</button>
-            </div>
+            <div class="rules-grid" id="rulesGrid"></div>
         </div>
     </div>
 
-    <!-- Modal for Adding Custom Formula / Quick Note -->
-    <div id="formulaModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 light:bg-white border border-slate-700 light:border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
-            <div class="p-5 border-b border-slate-800 light:border-slate-200 flex justify-between items-center bg-slate-800/40 light:bg-slate-50">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-square-plus text-amber-400"></i>
-                    <h3 class="font-bold text-base">إضافة قانون أو قاعدة هامة</h3>
-                </div>
-                <button onclick="closeFormulaModal()" class="text-slate-400 hover:text-white light:hover:text-slate-800 transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
+    <!-- Lesson Notes Modal -->
+    <div class="modal-overlay" id="notesModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalLessonTitle">ملاحظات الدرس</h3>
+                <button class="icon-btn" onclick="closeNotesModal()"><i class="fa-solid fa-xmark fa-lg"></i></button>
             </div>
-            <div class="p-5 space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 light:text-slate-600 mb-1">عنوان القاعدة / القانون</label>
-                    <input type="text" id="formulaTitleInput" placeholder="مثال: قانون الميل، تعريف الطاقة، قاعدة نحوية..." class="w-full p-2.5 bg-slate-800 light:bg-slate-100 border border-slate-700 light:border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 light:text-slate-600 mb-1">التفاصيل أو النص</label>
-                    <textarea id="formulaBodyInput" rows="4" placeholder="مثال: m = (y2 - y1) / (x2 - x1)" class="w-full p-2.5 bg-slate-800 light:bg-slate-100 border border-slate-700 light:border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 light:text-slate-600 mb-1">المادة المقترنة</label>
-                    <select id="formulaCategorySelect" class="w-full p-2.5 bg-slate-800 light:bg-slate-100 border border-slate-700 light:border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                        <option value="الرياضيات">الرياضيات / Math</option>
-                        <option value="العلوم">العلوم / Science</option>
-                        <option value="اللغة العربية">اللغة العربية</option>
-                        <option value="الدراسات الاجتماعية">الدراسات الاجتماعية</option>
-                        <option value="الكمبيوتر">الكمبيوتر / AI</option>
-                        <option value="English">English</option>
-                        <option value="عام">عام</option>
-                    </select>
-                </div>
-            </div>
-            <div class="p-4 border-t border-slate-800 light:border-slate-200 bg-slate-800/20 light:bg-slate-50 flex justify-end gap-2">
-                <button onclick="closeFormulaModal()" class="px-4 py-2 rounded-xl bg-slate-800 light:bg-slate-200 hover:bg-slate-700 light:hover:bg-slate-300 text-sm font-semibold transition">إلغاء</button>
-                <button onclick="saveFormula()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm transition shadow-md shadow-amber-500/20">حفظ القاعدة</button>
-            </div>
+            <textarea id="modalNotesText" placeholder="سجل هنا أي نقاط مهمة، تعاريف، أو أسئلة تحتاج مراجعتها لاحقاً..."></textarea>
+            <button class="btn" style="width: 100%; justify-content: center;" onclick="saveLessonNotes()"><i class="fa-solid fa-floppy-disk"></i> حفظ الملاحظة</button>
         </div>
     </div>
 
-    <!-- JavaScript Data and Logic -->
     <script>
-        // Data Structure extracted precisely from provided 6 images
-        const subjectsData = [
+        // Data Structure Extracted Fully From User Images
+        const curriculumData = [
             {
-                id: 'science',
-                name: 'العلوم / Science',
-                icon: 'fa-flask',
-                color: 'from-blue-600 to-cyan-500',
-                badgeBg: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+                subject: "العلوم (Science)",
+                icon: "fa-flask",
                 units: [
                     {
-                        title: 'Unit 1: Chemical Reactions and Their Environmental Impacts',
-                        lessons: [
-                            'Preliminary Lesson: Important Previously Studied Points',
-                            'Lesson 1: Types of Chemical Reactions',
-                            'Lesson 2: Combustion Reactions and Environmental Pollution',
-                            'Lesson 3: Smoking and Its Hazards'
-                        ]
+                        name: "Unit 1: Chemical Reactions and Their Environmental Impacts",
+                        lessons: ["Preliminary Lesson: Important Previously Studied Points", "Lesson 1: Types of Chemical Reactions", "Lesson 2: Combustion Reactions and Environmental Pollution", "Lesson 3: Smoking and Its Hazards"]
                     },
                     {
-                        title: 'Unit 2: Electricity and Magnetism',
-                        lessons: [
-                            'Lesson 1: Electric Current',
-                            'Lesson 2: Electric Circuits',
-                            'Lesson 3: Electric and Magnetic Forces'
-                        ]
-                    },
-                    {
-                        title: 'Unit 3: Variation of Traits in Living Organisms',
-                        lessons: [
-                            'Preliminary Lesson: Important Previously Studied Points (Part 1)',
-                            'Lesson 1: Heredity and Variation of Traits',
-                            'Preliminary Lesson: Important Previously Studied Points (Part 2)',
-                            'Lesson 2: Natural Selection and Artificial Selection'
-                        ]
-                    },
-                    {
-                        title: 'Unit 4: Dating Planet Earth',
-                        lessons: [
-                            'Lesson 1: The Fossil Record',
-                            'Lesson 2: Geologic Time'
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'social',
-                name: 'الدراسات الاجتماعية',
-                icon: 'fa-earth-africa',
-                color: 'from-amber-600 to-orange-500',
-                badgeBg: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-                units: [
-                    {
-                        title: 'الوحدة الأولى: الملامح الطبيعية والحضارية لقارات العالم الجديد',
-                        lessons: [
-                            'الدرس الأول: موقع ومظاهر سطح قارات العالم الجديد',
-                            'الدرس الثاني: الحضارات القديمة في الأمريكتين',
-                            'الدرس الثالث: الكشوف الجغرافية لقارات العالم الجديد'
-                        ]
-                    },
-                    {
-                        title: 'الوحدة الثانية: مصر في عصر محمد علي وخلفائه',
-                        lessons: [
-                            'الدرس الأول: تولية محمد علي حكم مصر وتثبيت دعائم حكمه',
-                            'الدرس الثاني: محمد علي وبناء الدولة الحديثة في مصر',
-                            'الدرس الثالث: مصر في عصر خلفاء محمد علي'
-                        ]
-                    },
-                    {
-                        title: 'الوحدة الثالثة: النظم البيئية في قارات العالم الجديد',
-                        lessons: [
-                            'الدرس الأول: نظم الغابات والحشائش في قارات العالم الجديد',
-                            'الدرس الثاني: النظم البيئية الصحراوية والمائية في قارات العالم الجديد',
-                            'الدرس الثالث: التغير المناخي وتأثيره على النظم البيئية'
-                        ]
-                    },
-                    {
-                        title: 'الوحدة الرابعة: الحركة الوطنية في مواجهة الاحتلال البريطاني',
-                        lessons: [
-                            'الدرس الأول: الثورة العرابية وبداية الاحتلال البريطاني لمصر',
-                            'الدرس الثاني: كفاح الحركة الوطنية وبناء الوعي الوطني (مصطفى كامل ومحمد فريد)'
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'arabic',
-                name: 'اللغة العربية',
-                icon: 'fa-book-open',
-                color: 'from-emerald-600 to-teal-500',
-                badgeBg: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-                units: [
-                    {
-                        title: 'أولاً: عناصر تحليل النصوص وتذوقها',
-                        lessons: [
-                            'عناصر التحليل',
-                            'عناصر التذوق'
-                        ]
-                    },
-                    {
-                        title: 'ثانياً: الوحدة الأولى: قيم تحمي شبابنا',
-                        lessons: [
-                            'الدرس الأول: نص الاستماع: آداب التعامل مع الوالدين',
-                            'الدرس الثاني: القراءة: أغلى من الذهب',
-                            'الدرس الثالث: القراءة: «الصداقة» للدكتور شوقي ضيف',
-                            'الدرس الرابع: النص الشعري: «تحية للشباب» لأمير الشعراء أحمد شوقي'
-                        ]
-                    },
-                    {
-                        title: 'الوحدة الثانية: نحو تفكير سليم',
-                        lessons: [
-                            'الدرس الأول: نص الاستماع: ثمرة القراءة',
-                            'الدرس الثاني: القراءة: أفضل النعم',
-                            'الدرس الثالث: القراءة: «خبر جليس» للدكتور أحمد زكي',
-                            'الدرس الرابع: النص الشعري: «تاج الفضائل» للإمام علي بن أبي طالب'
-                        ]
-                    },
-                    {
-                        title: 'الوحدة الثالثة: أنا والمستقبل',
-                        lessons: [
-                            'الدرس الأول: نص الاستماع: بناء المستقبل في عصر الآلة',
-                            'الدرس الثاني: القراءة: حرفتك بين يديك',
-                            'الدرس الثالث: القراءة: مستقبل مصر في الزراعة',
-                            'الدرس الرابع: النص الشعري: «اصنع بيدك مجدك» لمعروف الرصافي'
-                        ]
-                    },
-                    {
-                        title: 'ثالثاً: القواعد النحوية',
-                        lessons: [
-                            'مراجعة عامة على ما سبق من النحو',
-                            'اسم الفاعل',
-                            'اسم المفعول',
-                            'صيغ المبالغة',
-                            'اسم المكان واسم الزمان',
-                            'اسم الآلة'
-                        ]
-                    },
-                    {
-                        title: 'رابعاً وخامساً وسادساً: الإملاء والـتعبير والتحدث',
-                        lessons: [
-                            'مراجعة القواعد الإملائية',
-                            'كتابة الهمزة في بداية ونهاية ووسط الكلمة والألف اللينة',
-                            'التعبير الكتابي: كتابة نص إقناعي وتقارير',
-                            'فن التحدث والمواجهة'
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'math',
-                name: 'الرياضيات / Math',
-                icon: 'fa-calculator',
-                color: 'from-purple-600 to-pink-500',
-                badgeBg: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-                units: [
-                    {
-                        title: 'Unit 1: Numbers and Operations on Them',
-                        lessons: [
-                            'Lesson 1: Powers of Powers',
-                            'Lesson 2: Exponential Equations'
-                        ]
-                    },
-                    {
-                        title: 'Unit 2: Algebra',
-                        lessons: [
-                            'Lesson 1: Quadratic Function',
-                            'Lesson 2: Set of Real Zeros of Polynomial Functions',
-                            'Lesson 3: Rational Algebraic Functions',
-                            'Lesson 4: Common Domain and Equivalent Rational Algebraic Functions',
-                            'Lesson 5: Operations on Rational Algebraic Fractions Part 1 (Addition & Subtraction)',
-                            'Lesson 6: Operations on Rational Algebraic Fractions Part 2 (Multiplication & Division)'
-                        ]
-                    },
-                    {
-                        title: 'Unit 3: Geometry',
-                        lessons: [
-                            'Lesson 1: Similarity of Polygons',
-                            'Lesson 2: Similarity of Triangles',
-                            'Lesson 3: Dilation',
-                            'Lesson 4: Trigonometric Ratios of an Acute Angle',
-                            'Lesson 5: Trigonometric Ratios of Some Special Angles',
-                            'Lesson 6: Relation between Slopes of Parallel and Perpendicular Lines',
-                            'Lesson 7: Equation of the Straight Line'
-                        ]
-                    },
-                    {
-                        title: 'Unit 4: Statistics',
-                        lessons: [
-                            'Lesson 1: Measures of Dispersion Part 1 (Range & Interquartile Range)',
-                            'Lesson 2: Measures of Dispersion Part 2 (Standard Deviation)'
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'computer',
-                name: 'الكمبيوتر والذكاء الاصطناعي',
-                icon: 'fa-robot',
-                color: 'from-cyan-600 to-indigo-500',
-                badgeBg: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
-                units: [
-                    {
-                        title: 'Unit 1: Artificial Intelligence and Programming Languages',
-                        lessons: [
-                            'Lesson 1: Computational Thinking and Problem Solving',
-                            'Lesson 2: Artificial Intelligence Algorithms',
-                            'Lesson 3: Strings and Lists in Python',
-                            'Lesson 4: Functions with Parameters in Python',
-                            'Lesson 5: Handling User Input Errors in Python'
-                        ]
-                    },
-                    {
-                        title: 'Unit 2: Artificial Intelligence and Cybersecurity',
-                        lessons: [
-                            'Lesson 1: Prediction Using an Artificial Intelligence Model',
-                            'Lesson 2: Artificial Intelligence and Intellectual Property Rights',
-                            'Lesson 3: Cyber Awareness and Dangerous Electronic Games',
-                            'Lesson 4: Artificial Intelligence and Deepfakes'
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'english',
-                name: 'English Language',
-                icon: 'fa-language',
-                color: 'from-rose-600 to-red-500',
-                badgeBg: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
-                units: [
-                    {
-                        title: 'Part Two: Core Units',
-                        lessons: [
-                            'Unit 1: Personal Identity',
-                            'Unit 2: Communication with Family and Friends',
-                            'Unit 3: Artificial Intelligence',
-                            'Unit 4: Screen Time',
-                            'Unit 5: Design Thinking',
-                            'Unit 6: Why Do We Like Stories?',
-                            'The Story: The School Garden Project'
-                        ]
-                    }
-                ]
-            }
-        ];
-
-        // State Storage
-        let userProgress = JSON.parse(localStorage.getItem('study_dashboard_progress')) || {};
-        let userNotes = JSON.parse(localStorage.getItem('study_dashboard_notes')) || {};
-        let userFormulas = JSON.parse(localStorage.getItem('study_dashboard_formulas')) || [
-            {
-                id: 'f1',
-                title: 'معادلة الخط المستقيم (Slope-Intercept)',
-                body: 'y = mx + c (حيث m هو الميل، و c هو الجزء المقطوع من محور الصادات)',
-                category: 'الرياضيات'
-            },
-            {
-                id: 'f2',
-                title: 'قانون التباعد والإنحراف المعياري',
-                body: 'Standard Deviation (σ) = √( Σ(x - x̅)² / n )',
-                category: 'الرياضيات'
-            },
-            {
-                id: 'f3',
-                title: 'صيغ المبالغة في النحو',
-                body: 'فَعَّال - مِفْعَال - فَعُول - فَعِيل - فَعِل (مثل: غَفّار، مِقْدام، صَبُور، رَحِيم، حَذِر)',
-                category: 'اللغة العربية'
-            }
-        ];
-
-        let activeSubject = 'all';
-        let searchQuery = '';
-        let activeLessonIdForNote = null;
-
-        // Initialize App
-        window.addEventListener('DOMContentLoaded', () => {
-            renderSubjectTabs();
-            renderDashboard();
-            renderFormulas();
-            updateOverallStats();
-            initTheme();
-        });
-
-        // Theme management
-        function initTheme() {
-            const isLight = localStorage.getItem('study_dashboard_theme') === 'light';
-            if (isLight) {
-                document.documentElement.classList.remove('dark');
-                document.body.classList.add('light');
-                document.getElementById('themeIcon').className = 'fa-solid fa-sun text-amber-500';
-            } else {
-                document.documentElement.classList.add('dark');
-                document.body.classList.remove('light');
-                document.getElementById('themeIcon').className = 'fa-solid fa-moon text-slate-300';
-            }
-        }
-
-        function toggleTheme() {
-            const isDark = document.documentElement.classList.contains('dark');
-            if (isDark) {
-                document.documentElement.classList.remove('dark');
-                document.body.classList.add('light');
-                localStorage.setItem('study_dashboard_theme', 'light');
-                document.getElementById('themeIcon').className = 'fa-solid fa-sun text-amber-500';
-            } else {
-                document.documentElement.classList.add('dark');
-                document.body.classList.remove('light');
-                localStorage.setItem('study_dashboard_theme', 'dark');
-                document.getElementById('themeIcon').className = 'fa-solid fa-moon text-slate-300';
-            }
-        }
-
-        // Render Subject Filter Tabs
-        function renderSubjectTabs() {
-            const container = document.getElementById('subjectFilterContainer');
-            let html = `
-                <button onclick="setSubjectFilter('all')" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition ${activeSubject === 'all' ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20' : 'bg-slate-800 light:bg-white border border-slate-700 light:border-slate-300 text-slate-300 light:text-slate-700 hover:bg-slate-700'}">
-                    الكل 📚
-                </button>
-            `;
-
-            subjectsData.forEach(subj => {
-                const isActive = activeSubject === subj.id;
-                html += `
-                    <button onclick="setSubjectFilter('${subj.id}')" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap flex items-center gap-1.5 transition ${isActive ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20' : 'bg-slate-800 light:bg-white border border-slate-700 light:border-slate-300 text-slate-300 light:text-slate-700 hover:bg-slate-700'}">
-                        <i class="fa-solid ${subj.icon}"></i>
-                        <span>${subj.name}</span>
-                    </button>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function setSubjectFilter(subjId) {
-            activeSubject = subjId;
-            renderSubjectTabs();
-            renderDashboard();
-        }
-
-        function handleSearch() {
-            searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
-            renderDashboard();
-        }
-
-        // Generate Unique ID for a Lesson
-        function getLessonId(subjectId, unitIndex, lessonIndex) {
-            return `${subjectId}_u${unitIndex}_l${lessonIndex}`;
-        }
-
-        // Render Main Lessons Checklists
-        function renderDashboard() {
-            const container = document.getElementById('subjectsContainer');
-            container.innerHTML = '';
-
-            const filteredSubjects = subjectsData.filter(s => activeSubject === 'all' || s.id === activeSubject);
-
-            let visibleCount = 0;
-
-            filteredSubjects.forEach(subject => {
-                let subjectHasMatchingLesson = false;
-
-                // Pre-calculate subject progress
-                let totalLessonsInSubj = 0;
-                let completedLessonsInSubj = 0;
-
-                subject.units.forEach((unit, uIdx) => {
-                    unit.lessons.forEach((lText, lIdx) => {
-                        totalLessonsInSubj++;
-                        const lId = getLessonId(subject.id, uIdx, lIdx);
-                        if (userProgress[lId]) completedLessonsInSubj++;
-                    });
-                });
-
-                const subjPercent = totalLessonsInSubj > 0 ? Math.round((completedLessonsInSubj / totalLessonsInSubj) * 100) : 0;
-
-                // Subject Card HTML Structure
-                let subjectCard = `
-                    <div class="bg-slate-800/80 light:bg-white border border-slate-700/60 light:border-slate-200 rounded-2xl p-5 shadow-lg backdrop-blur glow-card transition space-y-4">
-                        
-                        <!-- Subject Header -->
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-700/60 light:border-slate-200 pb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr ${subject.color} flex items-center justify-center text-white shadow-md">
-                                    <i class="fa-solid ${subject.icon} text-lg"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-lg text-slate-100 light:text-slate-800">${subject.name}</h3>
-                                    <div class="text-xs text-slate-400 light:text-slate-500">${completedLessonsInSubj} من ${totalLessonsInSubj} درس مكتمل</div>
-                                </div>
-                            </div>
-
-                            <!-- Subject Progress Bar -->
-                            <div class="w-full sm:w-48 space-y-1">
-                                <div class="flex justify-between text-xs font-bold">
-                                    <span class="text-slate-400">الإنجاز</span>
-                                    <span class="text-brand-400">${subjPercent}%</span>
-                                </div>
-                                <div class="w-full h-2.5 bg-slate-700/70 light:bg-slate-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r ${subject.color} transition-all duration-300" style="width: ${subjPercent}%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Units Container -->
-                        <div class="space-y-4">
-                `;
-
-                let unitsHtml = '';
-
-                subject.units.forEach((unit, uIdx) => {
-                    let matchingLessonsInUnit = [];
-
-                    unit.lessons.forEach((lessonText, lIdx) => {
-                        const lessonId = getLessonId(subject.id, uIdx, lIdx);
-                        const isNoteExist = Boolean(userNotes[lessonId]);
-
-                        if (!searchQuery || lessonText.toLowerCase().includes(searchQuery) || unit.title.toLowerCase().includes(searchQuery) || subject.name.toLowerCase().includes(searchQuery)) {
-                            matchingLessonsInUnit.push({
-                                text: lessonText,
-                                index: lIdx,
-                                id: lessonId,
-                                isChecked: Boolean(userProgress[lessonId]),
-                                note: userNotes[lessonId] || ''
-                            });
-                        }
-                    });
-
-                    if (matchingLessonsInUnit.length > 0) {
-                        subjectHasMatchingLesson = true;
-
-                        unitsHtml += `
-                            <div class="space-y-2">
-                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 light:text-slate-500 bg-slate-900/40 light:bg-slate-100 px-3 py-1.5 rounded-lg inline-block border border-slate-700/30 light:border-slate-200">
-                                    ${unit.title}
-                                </h4>
-                                <div class="grid grid-cols-1 gap-2 pl-1">
-                        `;
-
-                        matchingLessonsInUnit.forEach(lesson => {
-                            unitsHtml += `
-                                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/50 light:bg-slate-50 hover:bg-slate-700/30 light:hover:bg-slate-100 border border-slate-700/40 light:border-slate-200 transition group">
-                                    <label class="flex items-center gap-3 cursor-pointer flex-1 min-w-0">
-                                        <input type="checkbox" onchange="toggleLesson('${lesson.id}')" ${lesson.isChecked ? 'checked' : ''} class="hidden">
-                                        <div class="w-5 h-5 rounded-md border-2 border-slate-500 flex items-center justify-center transition-all checkbox-bounce ${lesson.isChecked ? 'bg-emerald-500 border-emerald-500 text-white' : 'group-hover:border-slate-400'}">
-                                            <i class="fa-solid fa-check text-xs ${lesson.isChecked ? 'block' : 'hidden'}"></i>
-                                        </div>
-                                        <span class="text-sm font-semibold truncate transition ${lesson.isChecked ? 'completed-text text-slate-500' : 'text-slate-200 light:text-slate-800'}">
-                                            ${lesson.text}
-                                        </span>
-                                    </label>
-
-                                    <!-- Action Note Button -->
-                                    <button onclick="openNoteModal('${lesson.id}', '${lesson.text.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition ${lesson.note ? 'bg-brand-500/10 text-brand-400 border border-brand-500/30 hover:bg-brand-500/20' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800 light:hover:bg-slate-200'}">
-                                        <i class="fa-solid ${lesson.note ? 'fa-sticky-note text-amber-400' : 'fa-pen'}"></i>
-                                        <span class="hidden sm:inline">${lesson.note ? 'الملاحظة' : 'ملاحظة'}</span>
-                                    </button>
-                                </div>
-                            `;
-                        });
-
-                        unitsHtml += `
-                                </div>
-                            </div>
-                        `;
-                    }
-                });
-
-                subjectCard += unitsHtml + `
-                        </div>
-                    </div>
-                `;
-
-                if (subjectHasMatchingLesson) {
-                    container.innerHTML += subjectCard;
-                    visibleCount++;
-                }
-            });
-
-            if (visibleCount === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 bg-slate-800/40 light:bg-white rounded-2xl border border-slate-700/60 light:border-slate-200">
-                        <i class="fa-solid fa-magnifying-glass text-4xl text-slate-500 mb-3"></i>
-                        <p class="text-slate-400 font-semibold">لم يتم العثور على دروس تطابق بحثك</p>
-                    </div>
-                `;
-            }
-
-            updateOverallStats();
-        }
-
-        // Checkbox Toggle Logic
-        function toggleLesson(lessonId) {
-            userProgress[lessonId] = !userProgress[lessonId];
-            localStorage.setItem('study_dashboard_progress', JSON.stringify(userProgress));
-            renderDashboard();
-        }
-
-        // Update Global Statistics Dashboard
-        function updateOverallStats() {
-            let total = 0;
-            let completed = 0;
-
-            subjectsData.forEach(subj => {
-                subj.units.forEach((unit, uIdx) => {
-                    unit.lessons.forEach((_, lIdx) => {
-                        total++;
-                        const id = getLessonId(subj.id, uIdx, lIdx);
-                        if (userProgress[id]) completed++;
-                    });
-                });
-            });
-
-            const remaining = total - completed;
-            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-            document.getElementById('overallPercentageText').innerText = `${percentage}% مُكتمل`;
-            document.getElementById('overallCountText').innerText = `${completed} من ${total} درس`;
-            document.getElementById('overallProgressBar').style.width = `${percentage}%`;
-
-            document.getElementById('completedCount').innerText = completed;
-            document.getElementById('remainingCount').innerText = remaining;
-            document.getElementById('totalCount').innerText = total;
-        }
-
-        // Lesson Note Modal Functions
-        function openNoteModal(lessonId, lessonTitle) {
-            activeLessonIdForNote = lessonId;
-            document.getElementById('modalLessonTitle').innerText = lessonTitle;
-            document.getElementById('modalNoteInput').value = userNotes[lessonId] || '';
-            document.getElementById('noteModal').classList.remove('hidden');
-        }
-
-        function closeNoteModal() {
-            document.getElementById('noteModal').classList.add('hidden');
-            activeLessonIdForNote = null;
-        }
-
-        function saveLessonNote() {
-            if (!activeLessonIdForNote) return;
-            const noteText = document.getElementById('modalNoteInput').value.trim();
-            
-            if (noteText) {
-                userNotes[activeLessonIdForNote] = noteText;
-            } else {
-                delete userNotes[activeLessonIdForNote];
-            }
-
-            localStorage.setItem('study_dashboard_notes', JSON.stringify(userNotes));
-            closeNoteModal();
-            renderDashboard();
-        }
-
-        // Global Formulas / Rules Functions
-        function renderFormulas() {
-            const list = document.getElementById('formulasList');
-            list.innerHTML = '';
-
-            if (userFormulas.length === 0) {
-                list.innerHTML = `
-                    <div class="text-center py-6 text-slate-500 text-xs">
-                        لا توجد قوانين محفوطة حالياً. اضغط "إضافة قانون" لإدخال قواعد وملاحظات عامة!
-                    </div>
-                `;
-                return;
-            }
-
-            userFormulas.forEach(item => {
-                list.innerHTML += `
-                    <div class="p-3.5 bg-slate-900/60 light:bg-slate-50 border border-slate-700/50 light:border-slate-200 rounded-xl space-y-1.5 relative group">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-amber-400 light:text-amber-600">${item.title}</span>
-                            <div class="flex items-center gap-1">
-                                <span class="text-[10px] bg-slate-800 light:bg-slate-200 text-slate-400 light:text-slate-600 px-2 py-0.5 rounded-full border border-slate-700/40">${item.category}</span>
-                                <button onclick="deleteFormula('${item.id}')" class="text-slate-500 hover:text-rose-400 p-1 transition opacity-80 group-hover:opacity-100">
-                                    <i class="fa-solid fa-trash-can text-xs"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <p class="text-xs text-slate-300 light:text-slate-700 whitespace-pre-line leading-relaxed dir-auto">${item.body}</p>
-                    </div>
-                `;
-            });
-        }
-
-        function openFormulaModal() {
-            document.getElementById('formulaTitleInput').value = '';
-            document.getElementById('formulaBodyInput').value = '';
-            document.getElementById('formulaModal').classList.remove('hidden');
-        }
-
-        function closeFormulaModal() {
-            document.getElementById('formulaModal').classList.add('hidden');
-        }
-
-        function saveFormula() {
-            const title = document.getElementById('formulaTitleInput').value.trim();
-            const body = document.getElementById('formulaBodyInput').value.trim();
-            const category = document.getElementById('formulaCategorySelect').value;
-
-            if (!title || !body) {
-                alert('برجاء كتابة عنوان وتفاصيل القانون أو القاعدة أولاً.');
-                return;
-            }
-
-            const newFormula = {
-                id: 'f_' + Date.now(),
-                title: title,
-                body: body,
-                category: category
-            };
-
-            userFormulas.unshift(newFormula);
-            localStorage.setItem('study_dashboard_formulas', JSON.stringify(userFormulas));
-            renderFormulas();
-            closeFormulaModal();
-        }
-
-        function deleteFormula(id) {
-            userFormulas = userFormulas.filter(f => f.id !== id);
-            localStorage.setItem('study_dashboard_formulas', JSON.stringify(userFormulas));
-            renderFormulas();
-        }
-
-        // Reset All User Data
-        function resetAllProgress() {
-            if (confirm('هل أنت تأكد من انك تريد إعادة ضبط جميع العلامات والملاحظات المحفوظة؟')) {
-                localStorage.removeItem('study_dashboard_progress');
-                localStorage.removeItem('study_dashboard_notes');
-                userProgress = {};
-                userNotes = {};
-                renderDashboard();
-            }
-        }
-    </script>
-</body>
-</html>
-```
+                        name: "Unit 2: Electricity and Magnetism",
+                        lessons: ["Lesson 1: Electric Current", "Lesson 2: Electric Circuits", "Lesson 3: Electric and Magnetic Fo
