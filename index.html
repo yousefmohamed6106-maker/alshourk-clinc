@@ -1,477 +1,353 @@
+```html
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>عيادة الشروق للرعاية الطبية الشاملة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <style>
-    :root {
-      --primary: #1b4d89;
-      --primary-dark: #0f3057;
-      --gold: #d4af37;
-      --gold-light: #f9f3db;
-      --bg-light: #f4f7fb;
-      --text-dark: #223354;
-      --white: #ffffff;
-      --shadow: 0 10px 30px rgba(27, 77, 137, 0.1);
-      --radius: 16px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Tajawal', sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-light);
-      color: var(--text-dark);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-      color: var(--white);
-      padding: 20px 15px;
-      text-align: center;
-      border-bottom-left-radius: 25px;
-      border-bottom-right-radius: 25px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    }
-
-    /* دائرة اللوجو: الصورة في المنتصف */
-    .logo-container {
-      width: 110px;
-      height: 110px;
-      margin: 0 auto 10px;
-      background: var(--white);
-      border-radius: 50%;
-      padding: 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      border: 3px solid var(--gold);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .logo-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center;
-      border-radius: 50%;
-      display: block;
-    }
-
-    header h1 {
-      font-size: 1.5rem;
-      font-weight: 800;
-    }
-
-    header p {
-      color: var(--gold);
-      font-size: 0.85rem;
-      font-weight: 700;
-    }
-
-    .container {
-      max-width: 500px;
-      margin: 20px auto;
-      padding: 0 16px;
-      width: 100%;
-      flex: 1;
-    }
-
-    .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 24px 20px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(27, 77, 137, 0.08);
-    }
-
-    .step-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #edf2f7;
-    }
-
-    .step-title {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-back {
-      background: #edf2f7;
-      color: var(--primary);
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .dept-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    .dept-card {
-      border: 2px solid #e1e8f0;
-      border-radius: var(--radius);
-      padding: 18px 15px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      cursor: pointer;
-      background: #fafbfc;
-    }
-
-    .dept-icon {
-      width: 50px;
-      height: 50px;
-      background: #e6f0fa;
-      color: var(--primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-
-    .dept-info {
-      text-align: right;
-    }
-
-    .dept-name {
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: var(--primary-dark);
-    }
-
-    .doctor-name {
-      font-size: 0.9rem;
-      color: var(--gold);
-      font-weight: 700;
-      margin-top: 2px;
-    }
-
-    .services-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .service-item {
-      border: 2px solid #e1e8f0;
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      background: #fafbfc;
-      font-weight: 700;
-      color: var(--text-dark);
-    }
-
-    .form-group {
-      margin-bottom: 14px;
-    }
-
-    .form-group label {
-      display: block;
-      font-weight: 700;
-      margin-bottom: 6px;
-      font-size: 0.9rem;
-      color: var(--primary-dark);
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 12px;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      outline: none;
-      background: #f8fafc;
-    }
-
-    .btn-submit {
-      width: 100%;
-      background: #25d366;
-      color: white;
-      border: none;
-      padding: 16px;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة متابعة المذاكرة الذكية | Study Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        },
+                        accent: {
+                            purple: '#a855f7',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            rose: '#f43f5e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Cairo', 'Segoe UI', 'Tahoma', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.light {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .completed-text {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        /* Card glow effect */
+        .glow-card {
+            box-shadow: 0 0 15px -3px rgba(14, 165, 233, 0.15);
+        }
+        .glow-card:hover {
+            box-shadow: 0 0 20px -1px rgba(14, 165, 233, 0.3);
+        }
+        .checkbox-bounce {
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .checkbox-bounce:active {
+            transform: scale(0.85);
+        }
+    </style>
 </head>
+<body class="min-h-screen pb-12 antialiased selection:bg-brand-500 selection:text-white">
 
-<body>
+    <!-- Header Navigation Bar -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-slate-900/80 border-b border-slate-800 dark:bg-slate-900/80 dark:border-slate-800 light:bg-white/80 light:border-slate-200 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-tr from-brand-600 to-accent-purple p-2.5 rounded-xl text-white shadow-lg shadow-brand-500/20">
+                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">مُتابِع المذاكرة الذكي</h1>
+                    <p class="text-xs text-slate-400 light:text-slate-500">منظومة إنجاز الدروس والملاحظات</p>
+                </div>
+            </div>
 
-  <header>
-    <div class="logo-container">
-      <img src="logo.jpg" alt="لوجو عيادة الشروق" class="logo-img">
+            <!-- Actions & Theme Toggle -->
+            <div class="flex items-center gap-3">
+                <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 light:bg-slate-200 light:hover:bg-slate-300 text-slate-300 light:text-slate-700 transition">
+                    <i class="fa-solid fa-moon text-lg" id="themeIcon"></i>
+                </button>
+                <button onclick="resetAllProgress()" class="px-3 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs font-semibold flex items-center gap-1.5 border border-rose-500/20 transition">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span class="hidden sm:inline">إعادة ضبط</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+
+        <!-- Top Progress Summary Banner -->
+        <div class="bg-slate-800/80 light:bg-white border border-slate-700/60 light:border-slate-200 rounded-2xl p-5 sm:p-6 shadow-xl backdrop-blur relative overflow-hidden">
+            <div class="absolute -left-10 -top-10 w-40 h-40 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center relative z-10">
+                <!-- Percentage Circle/Bar -->
+                <div class="md:col-span-2 space-y-3">
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <span class="text-xs font-bold tracking-wider text-brand-500 uppercase">مستوى التقدم الإجمالي</span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold mt-0.5" id="overallPercentageText">0% مُكتمل</h2>
+                        </div>
+                        <span class="text-sm text-slate-400 light:text-slate-600 font-medium" id="overallCountText">0 من 0 درس</span>
+                    </div>
+                    <!-- Main Progress Bar -->
+                    <div class="w-full h-4 bg-slate-700/60 light:bg-slate-200 rounded-full overflow-hidden p-0.5 border border-slate-600/30">
+                        <div id="overallProgressBar" class="h-full bg-gradient-to-r from-brand-500 via-accent-purple to-accent-emerald rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Stats Badges -->
+                <div class="flex items-center justify-around bg-slate-900/50 light:bg-slate-100 p-4 rounded-xl border border-slate-700/40 light:border-slate-200">
+                    <div class="text-center">
+                        <div class="text-xl font-bold text-emerald-400" id="completedCount">0</div>
+                        <div class="text-xs text-slate-400 light:text-slate-600">منتهي</div>
+                    </div>
+                    <div class="w-px h-8 bg-slate-700 light:bg-slate-300"></div>
+                    <div class="text-center">
+                        <div class="text-xl font-bold text-amber-400" id="remainingCount">0</div>
+                        <div class="text-xs text-slate-400 light:text-slate-600">متبقي</div>
+                    </div>
+                    <div class="w-px h-8 bg-slate-700 light:bg-slate-300"></div>
+                    <div class="text-center">
+                        <div class="text-xl font-bold text-brand-500" id="totalCount">0</div>
+                        <div class="text-xs text-slate-400 light:text-slate-600">إجمالي الدروس</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls Bar: Subject Tabs & Search -->
+        <div class="space-y-4">
+            <!-- Search & Filter Input -->
+            <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+                <!-- Subject Pills Navigation -->
+                <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0 scrollbar-none" id="subjectFilterContainer">
+                    <!-- Dynamic Filters populated by JS -->
+                </div>
+
+                <!-- Search Input Box -->
+                <div class="relative w-full sm:w-72">
+                    <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="بحث في الدروس أو المواد..." class="w-full pr-10 pl-4 py-2 bg-slate-800/90 light:bg-white border border-slate-700 light:border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition">
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Lessons List Column (Takes 2 Columns on Large Screens) -->
+            <div class="lg:col-span-2 space-y-6" id="subjectsContainer">
+                <!-- Subject Cards populated by JS -->
+            </div>
+
+            <!-- Global Notes & Formulas Hub Column (Takes 1 Column) -->
+            <div class="space-y-6">
+                <!-- Quick Notes / Math Formulas Card -->
+                <div class="bg-slate-800/80 light:bg-white border border-slate-700/60 light:border-slate-200 rounded-2xl p-5 shadow-lg backdrop-blur sticky top-20">
+                    <div class="flex items-center justify-between mb-4 border-b border-slate-700/60 light:border-slate-200 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
+                                <i class="fa-solid fa-lightbulb text-lg"></i>
+                            </div>
+                            <h3 class="font-bold text-base">القوانين والملاحظات المهمة</h3>
+                        </div>
+                        <button onclick="openFormulaModal()" class="px-2.5 py-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+                            <i class="fa-solid fa-plus"></i> إضافة قانون
+                        </button>
+                    </div>
+
+                    <!-- Formula List -->
+                    <div id="formulasList" class="space-y-3 max-h-[calc(100vh-240px)] overflow-y-auto pr-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal for Lesson Note Edit -->
+    <div id="noteModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 light:bg-white border border-slate-700 light:border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden transform transition-all">
+            <div class="p-5 border-b border-slate-800 light:border-slate-200 flex justify-between items-center bg-slate-800/40 light:bg-slate-50">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-brand-500"></i>
+                    <h3 class="font-bold text-base" id="modalLessonTitle">إضافة ملاحظة للدرس</h3>
+                </div>
+                <button onclick="closeNoteModal()" class="text-slate-400 hover:text-white light:hover:text-slate-800 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-5 space-y-4">
+                <p class="text-xs text-slate-400 light:text-slate-600">اكتب ملخصك، القواعد الهامة، أو الملاحظات الخاصة بهذا الدرس لتستذكرها لاحقاً بسهولة.</p>
+                <textarea id="modalNoteInput" rows="5" placeholder="اكتب ملاحظاتك هنا..." class="w-full p-3 bg-slate-800 light:bg-slate-100 border border-slate-700 light:border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-200 light:text-slate-800"></textarea>
+            </div>
+            <div class="p-4 border-t border-slate-800 light:border-slate-200 bg-slate-800/20 light:bg-slate-50 flex justify-end gap-2">
+                <button onclick="closeNoteModal()" class="px-4 py-2 rounded-xl bg-slate-800 light:bg-slate-200 hover:bg-slate-700 light:hover:bg-slate-300 text-sm font-semibold transition">إلغاء</button>
+                <button onclick="saveLessonNote()" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition shadow-md shadow-brand-500/20">حفظ الملاحظة</button>
+            </div>
+        </div>
     </div>
 
-    <h1>عيادة الشروق</h1>
-    <p>للرعاية الطبية الشاملة</p>
-  </header>
-
-  <div class="container">
-
-    <!-- الخطوة الأولى: اختيار العيادة -->
-    <div class="card" id="step-1">
-      <div class="step-header">
-        <div class="step-title">
-          <i class="fa-solid fa-stethoscope"></i>
-          <span>اختر العيادة والتخصص</span>
+    <!-- Modal for Adding Custom Formula / Quick Note -->
+    <div id="formulaModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 light:bg-white border border-slate-700 light:border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
+            <div class="p-5 border-b border-slate-800 light:border-slate-200 flex justify-between items-center bg-slate-800/40 light:bg-slate-50">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-square-plus text-amber-400"></i>
+                    <h3 class="font-bold text-base">إضافة قانون أو قاعدة هامة</h3>
+                </div>
+                <button onclick="closeFormulaModal()" class="text-slate-400 hover:text-white light:hover:text-slate-800 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-5 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 light:text-slate-600 mb-1">عنوان القاعدة / القانون</label>
+                    <input type="text" id="formulaTitleInput" placeholder="مثال: قانون الميل، تعريف الطاقة، قاعدة نحوية..." class="w-full p-2.5 bg-slate-800 light:bg-slate-100 border border-slate-700 light:border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 light:text-slate-600 mb-1">التفاصيل أو النص</label>
+                    <textarea id="formulaBodyInput" rows="4" placeholder="مثال: m = (y2 - y1) / (x2 - x1)" class="w-full p-2.5 bg-slate-800 light:bg-slate-100 border border-slate-700 light:border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 light:text-slate-600 mb-1">المادة المقترنة</label>
+                    <select id="formulaCategorySelect" class="w-full p-2.5 bg-slate-800 light:bg-slate-100 border border-slate-700 light:border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <option value="الرياضيات">الرياضيات / Math</option>
+                        <option value="العلوم">العلوم / Science</option>
+                        <option value="اللغة العربية">اللغة العربية</option>
+                        <option value="الدراسات الاجتماعية">الدراسات الاجتماعية</option>
+                        <option value="الكمبيوتر">الكمبيوتر / AI</option>
+                        <option value="English">English</option>
+                        <option value="عام">عام</option>
+                    </select>
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-800 light:border-slate-200 bg-slate-800/20 light:bg-slate-50 flex justify-end gap-2">
+                <button onclick="closeFormulaModal()" class="px-4 py-2 rounded-xl bg-slate-800 light:bg-slate-200 hover:bg-slate-700 light:hover:bg-slate-300 text-sm font-semibold transition">إلغاء</button>
+                <button onclick="saveFormula()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm transition shadow-md shadow-amber-500/20">حفظ القاعدة</button>
+            </div>
         </div>
-      </div>
-
-      <div class="dept-grid">
-
-        <div class="dept-card" onclick="goToStep2('heart')">
-          <div class="dept-icon">
-            <i class="fa-solid fa-heart-pulse"></i>
-          </div>
-          <div class="dept-info">
-            <div class="dept-name">عيادة القلب</div>
-            <div class="doctor-name">د. أسماء بركات</div>
-          </div>
-        </div>
-
-        <div class="dept-card" onclick="goToStep2('internal')">
-          <div class="dept-icon">
-            <i class="fa-solid fa-user-doctor"></i>
-          </div>
-          <div class="dept-info">
-            <div class="dept-name">عيادة الباطنة</div>
-            <div class="doctor-name">د. محمد إبراهيم</div>
-          </div>
-        </div>
-
-      </div>
     </div>
 
-    <!-- الخطوة الثانية: اختيار نوع الكشف -->
-    <div class="card hidden" id="step-2">
-      <div class="step-header">
-        <div class="step-title">
-          <i class="fa-solid fa-notes-medical"></i>
-          <span id="step2-title">اختر نوع الكشف</span>
-        </div>
-
-        <button class="btn-back" onclick="goToStep1()">
-          <i class="fa-solid fa-arrow-right"></i>
-          رجوع
-        </button>
-      </div>
-
-      <div class="services-list" id="services-container"></div>
-    </div>
-
-    <!-- الخطوة الثالثة: بيانات الحجز -->
-    <div class="card hidden" id="step-3">
-      <div class="step-header">
-        <div class="step-title">
-          <i class="fa-solid fa-calendar-check"></i>
-          <span>تفاصيل الموعد والمريض</span>
-        </div>
-
-        <button class="btn-back" onclick="backToStep2()">
-          <i class="fa-solid fa-arrow-right"></i>
-          رجوع
-        </button>
-      </div>
-
-      <div class="form-group">
-        <label>اسم المريض بالكامل</label>
-        <input
-          type="text"
-          id="patient-name"
-          class="form-control"
-          placeholder="أدخل اسم المريض"
-        >
-      </div>
-
-      <div class="form-group">
-        <label>رقم هاتف المريض</label>
-        <input
-          type="tel"
-          id="patient-phone"
-          class="form-control"
-          placeholder="01xxxxxxxx"
-        >
-      </div>
-
-      <div class="form-group">
-        <label>اليوم المفضل</label>
-        <select id="visit-day" class="form-control">
-          <option value="اليوم">اليوم</option>
-          <option value="غداً">غداً</option>
-          <option value="بعد غد">بعد غد</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>وقت الحجز (من 5:00 إلى 10:00 مساءً)</label>
-        <select id="visit-time" class="form-control">
-          <option value="05:00 PM">05:00 PM (5:00 عصراً)</option>
-          <option value="05:30 PM">05:30 PM (5:30 عصراً)</option>
-          <option value="06:00 PM">06:00 PM (6:00 مساءً)</option>
-          <option value="06:30 PM">06:30 PM (6:30 مساءً)</option>
-          <option value="07:00 PM">07:00 PM (7:00 مساءً)</option>
-          <option value="07:30 PM">07:30 PM (7:30 مساءً)</option>
-          <option value="08:00 PM">08:00 PM (8:00 مساءً)</option>
-          <option value="08:30 PM">08:30 PM (8:30 مساءً)</option>
-          <option value="09:00 PM">09:00 PM (9:00 مساءً)</option>
-          <option value="09:30 PM">09:30 PM (9:30 مساءً)</option>
-          <option value="10:00 PM">10:00 PM (10:00 مساءً)</option>
-        </select>
-      </div>
-
-      <button class="btn-submit" onclick="sendToWhatsApp()">
-        <i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i>
-        <span>تأكيد الحجز عبر الواتساب</span>
-      </button>
-    </div>
-
-  </div>
-
-  <script>
-    const clinicWhatsAppNumber = "201044629414";
-
-    let selectedDeptKey = '';
-    let selectedDepartment = '';
-    let selectedDoctor = '';
-    let selectedService = '';
-
-    const servicesData = {
-      heart: {
-        doctor: 'د. أسماء بركات',
-        deptName: 'عيادة القلب',
-        items: [
-          'كشف إيكو (Echo)',
-          'كشف رسم قلب (ECG)',
-          'كشف كامل (شامل)'
-        ]
-      },
-
-      internal: {
-        doctor: 'د. محمد إبراهيم',
-        deptName: 'عيادة الباطنة',
-        items: [
-          'كشف عادي'
-        ]
-      }
-    };
-
-    function goToStep1() {
-      document.getElementById('step-1').classList.remove('hidden');
-      document.getElementById('step-2').classList.add('hidden');
-      document.getElementById('step-3').classList.add('hidden');
-    }
-
-    function goToStep2(deptKey) {
-      selectedDeptKey = deptKey;
-      selectedDepartment = servicesData[deptKey].deptName;
-      selectedDoctor = servicesData[deptKey].doctor;
-
-      document.getElementById('step2-title').innerText =
-        `${selectedDepartment} (${selectedDoctor})`;
-
-      const container = document.getElementById('services-container');
-      container.innerHTML = '';
-
-      servicesData[deptKey].items.forEach(serviceName => {
-        const div = document.createElement('div');
-
-        div.className = 'service-item';
-        div.onclick = () => goToStep3(serviceName);
-
-        div.innerHTML =
-          `<span>${serviceName}</span>
-          <i class="fa-solid fa-chevron-left" style="color:var(--gold)"></i>`;
-
-        container.appendChild(div);
-      });
-
-      document.getElementById('step-1').classList.add('hidden');
-      document.getElementById('step-2').classList.remove('hidden');
-      document.getElementById('step-3').classList.add('hidden');
-    }
-
-    function backToStep2() {
-      document.getElementById('step-1').classList.add('hidden');
-      document.getElementById('step-2').classList.remove('hidden');
-      document.getElementById('step-3').classList.add('hidden');
-    }
-
-    function goToStep3(serviceName) {
-      selectedService = serviceName;
-
-      document.getElementById('step-1').classList.add('hidden');
-      document.getElementById('step-2').classList.add('hidden');
-      document.getElementById('step-3').classList.remove('hidden');
-    }
-
-    function sendToWhatsApp() {
-      const name = document.getElementById('patient-name').value.trim();
-      const phone = document.getElementById('patient-phone').value.trim();
-      const day = document.getElementById('visit-day').value;
-      const time = document.getElementById('visit-time').value;
-
-      if (!name || !phone) {
-        alert('برجاء كتابة اسم المريض ورقم الهاتف أولاً.');
-        return;
-      }
-
-      const message =
-        `طلب حجز جديد في *عيادة الشروق*:\n\n` +
-        `👤 *اسم المريض:* ${name}\n` +
-        `📞 *رقم الهاتف:* ${phone}\n` +
-        `🏥 *العيادة والطبيب:* ${selectedDepartment} (${selectedDoctor})\n` +
-        `🩺 *نوع الكشف:* ${selectedService}\n` +
-        `⏰ *الموعد المطلوب:* ${day} الساعة ${time}\n\n` +
-        `يرجى تأكيد الحجز.`;
-
-      window.open(
-        `https://api.whatsapp.com/send?phone=${clinicWhatsAppNumber}&text=${encodeURIComponent(message)}`,
-        '_blank'
-      );
-    }
-  </script>
-
-</body>
-</html>
+    <!-- JavaScript Data and Logic -->
+    <script>
+        // Data Structure extracted precisely from provided 6 images
+        const subjectsData = [
+            {
+                id: 'science',
+                name: 'العلوم / Science',
+                icon: 'fa-flask',
+                color: 'from-blue-600 to-cyan-500',
+                badgeBg: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+                units: [
+                    {
+                        title: 'Unit 1: Chemical Reactions and Their Environmental Impacts',
+                        lessons: [
+                            'Preliminary Lesson: Important Previously Studied Points',
+                            'Lesson 1: Types of Chemical Reactions',
+                            'Lesson 2: Combustion Reactions and Environmental Pollution',
+                            'Lesson 3: Smoking and Its Hazards'
+                        ]
+                    },
+                    {
+                        title: 'Unit 2: Electricity and Magnetism',
+                        lessons: [
+                            'Lesson 1: Electric Current',
+                            'Lesson 2: Electric Circuits',
+                            'Lesson 3: Electric and Magnetic Forces'
+                        ]
+                    },
+                    {
+                        title: 'Unit 3: Variation of Traits in Living Organisms',
+                        lessons: [
+                            'Preliminary Lesson: Important Previously Studied Points (Part 1)',
+                            'Lesson 1: Heredity and Variation of Traits',
+                            'Preliminary Lesson: Important Previously Studied Points (Part 2)',
+                            'Lesson 2: Natural Selection and Artificial Selection'
+                        ]
+                    },
+                    {
+                        title: 'Unit 4: Dating Planet Earth',
+                        lessons: [
+                            'Lesson 1: The Fossil Record',
+                            'Lesson 2: Geologic Time'
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'social',
+                name: 'الدراسات الاجتماعية',
+                icon: 'fa-earth-africa',
+                color: 'from-amber-600 to-orange-500',
+                badgeBg: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+                units: [
+                    {
+                        title: 'الوحدة الأولى: الملامح الطبيعية والحضارية لقارات العالم الجديد',
+                        lessons: [
+                            'الدرس الأول: موقع ومظاهر سطح قارات العالم الجديد',
+                            'الدرس الثاني: الحضارات القديمة في الأمريكتين',
+                            'الدرس الثالث: الكشوف الجغرافية لقارات العالم الجديد'
+                        ]
+                    },
+                    {
+                        title: 'الوحدة الثانية: مصر في عصر محمد علي وخلفائه',
+                        lessons: [
+                            'الدرس الأول: تولية محمد علي حكم مصر وتثبيت دعائم حكمه',
+                            'الدرس الثاني: محمد علي وبناء الدولة الحديثة في مصر',
+                            'الدرس الثالث: مصر في عصر خلفاء محمد علي'
+                        ]
+                    },
+                    {
+                        title: 'الوحدة الثالثة: النظم البيئية في قارات العالم الجديد',
+                        lessons: [
+                            'الدرس الأول: نظم الغابات والحشائش في قارات العالم الجديد',
+                            'الدرس الثاني: النظم البيئية الصحراوية والمائية في قارات العالم الجديد',
+                            'الدرس الثالث: التغير المناخي وتأثيره على النظم البيئية'
+                        ]
+                    },
+                    {
+                        title: 'الوحدة الرابعة: الحركة الوطنية في مواجهة الاحتلال البريطاني',
+                        lessons: [
+                            'الدرس الأول: الثورة العرابية وبداية الاحتلال البريطاني لم
